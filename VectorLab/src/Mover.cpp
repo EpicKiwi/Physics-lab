@@ -11,14 +11,15 @@ Mover::~Mover()
 
 void Mover::update()
 {
+	ofVec2f friction = (this->velocity.getNormalized() * -1) * this->frictionCoefficient;
+	this->applyForce(friction);
+
 	this->velocity += this->acceleration;
 	this->position += this->velocity;
-	if (this->position.x + this->mass > ofGetWindowWidth() || this->position.x - this->mass < 0) {
-		if (this->position.x + this->mass > ofGetWindowWidth())
-			this->position.x = ofGetWindowWidth() - this->mass;
-		else
-			this->position.x = this->mass;
-		this->velocity.x *= -1;
+	if (this->position.x  > ofGetWindowWidth()) {
+		this->position.x = 0;
+	} else if (this->position.x < 0) {
+		this->position.x = ofGetWindowWidth();
 	}
 	if (this->position.y + this->mass > ofGetWindowHeight() || this->position.y - this->mass < 0) {
 		if (this->position.y + this->mass > ofGetWindowHeight())
@@ -33,7 +34,7 @@ void Mover::display()
 {
 	ofColor immobile(255, 255, 255);
 	ofColor maximum(255, 0, 0);
-	ofSetColor(immobile.lerp(maximum,ofMap(this->velocity.length(),0,200,0,1,true)));
+	ofSetColor(immobile.lerp(maximum,ofMap(this->velocity.length(),0,50,0,1,true)));
 	ofDrawCircle(this->position, this->mass);
 }
 
@@ -83,4 +84,14 @@ int& Mover::getMass()
 void Mover::setMass(const int & mass)
 {
 	this->mass = mass;
+}
+
+float & Mover::getFrictionCoefficient()
+{
+	return this->frictionCoefficient;
+}
+
+void Mover::setFrictionCoefficient(const float & coef)
+{
+	this->frictionCoefficient = coef;
 }

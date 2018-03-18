@@ -21,11 +21,14 @@ public:
 	ofVec2f getAcceleration();
 	int& getMass();
 	void setMass(const int& mass);
+	float& getFrictionCoefficient();
+	void setFrictionCoefficient(const float& coef);
 
 private:
 	ofVec2f position;
 	ofVec2f velocity;
 	ofVec2f acceleration;
 	int mass = 25;
+	float frictionCoefficient = 0.3;
 };
 
